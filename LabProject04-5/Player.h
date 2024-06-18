@@ -30,6 +30,10 @@ public:
 		Position = XMFLOAT3(0.0, 0.0, 0.0);
 	}
 
+	void GiveRecoil(float Value) {
+		Rotation.x -= Value;
+	}
+
 	// 플레이어 이동
 	void MovePlayer(float FT) {
 		if (MoveFront)

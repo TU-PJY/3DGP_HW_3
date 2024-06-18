@@ -6,7 +6,8 @@
 class Gun : public OBJ {
 private:
 	XMFLOAT3 TargetRotation{};
-	bool FireState{};
+	bool TriggerState{};
+	bool Fire{};
 	float FireDelay{};
 
 public:
@@ -20,11 +21,32 @@ public:
 	}
 
 	bool GetFireState() {
-		return FireState;
+		return Fire;
+	}
+
+	void UpdateShooting(float FT) {
+		if (FireDelay > 0) {
+			FireDelay -= FT;
+			if (FireDelay <= 0)
+				FireDelay = 0;
+
+			Fire = false;
+		}
+
+		if (TriggerState) {
+			if (FireDelay == 0) {
+				FireDelay = 0.1;
+				Fire = true;
+				auto player = fw.FindObject("player", LayerRange::Single, Layer::L1);
+				if (player) player->GiveRecoil(3.0);
+			}
+		}
 	}
 
 	void Update(float FT) {
 		InitTransform();
+
+		UpdateShooting(FT);
 
 		auto player = fw.FindObject("player", LayerRange::Single, Layer::L1);
 		if (player) {
@@ -36,7 +58,7 @@ public:
 		Rotation.y = std::lerp(Rotation.y, TargetRotation.y, 20 * FT);
 		Rotation.z = std::lerp(Rotation.z, TargetRotation.z, 20 * FT);
 
-		SetPosition(Position);
+		SetPosition(Position.x, Position.y, Position.z );
 		Rotate(Rotation.x, Rotation.y, Rotation.z);
 	}
 
@@ -64,16 +86,18 @@ public:
 
 	void ObjectMouseController(POINT CursorPos, bool LButtonDownState, bool RButtonDownState) {
 		if (LButtonDownState)
-			FireState = true;
+			TriggerState = true;
 
 		if (!LButtonDownState)
-			FireState = false;
+			TriggerState = false;
 	}
 };
 
 
 class Fire : public OBJ {
 private:
+	float RenderTime{};
+
 public:
 	Fire(std::string tag, Layer layer) {
 		SetShader(pShader);
@@ -91,23 +115,26 @@ public:
 		if (gun) {
 			Position = gun->Position;
 			Rotation = gun->Rotation;
+			if (gun->GetFireState())
+				RenderTime = 0.05;
 		}
+
+		if(RenderTime > 0)
+			RenderTime -= FT;
+
 		SetPosition(Position);
 		Rotate(Rotation.x, Rotation.y, Rotation.z);
 	}
 
 	void Render(ID3D12GraphicsCommandList* CmdList) {
-		if (ObjectShader)
-			ObjectShader->Render(CmdList);
+		if (RenderTime > 0) {
+			if (ObjectShader)
+				ObjectShader->Render(CmdList);
 
-		UpdateShaderVariables(CmdList);
+			UpdateShaderVariables(CmdList);
 
-		auto gun = fw.FindObject("gun", LayerRange::Single, Layer::L1);
-		if (gun) {
-			if (gun->GetFireState()) {
-				if (ObjectMesh)
-					ObjectMesh->Render(CmdList);
-			}
+			if (ObjectMesh)
+				ObjectMesh->Render(CmdList);
 		}
 	}
 };
