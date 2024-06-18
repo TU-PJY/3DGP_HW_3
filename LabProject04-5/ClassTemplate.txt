@@ -2,7 +2,7 @@
 private:
 
 public:
-	ClassName(Layer layer, std::string tag) {
+	ClassName(std::string tag, Layer layer) {
 		SetShader();
 		SetMesh();
 
@@ -25,7 +25,7 @@ public:
 		}
 	}
 
-	void ObjectMouseMotionController(POINT CursorPos, POINT PrevCursorPos, bool LButtonDownState, bool RButtonDownState) {}
+	void ObjectMouseMotionController(POINT PrevCursorPos, bool LButtonDownState, bool RButtonDownState) {}
 
 	void ObjectMouseController(POINT CursorPos, bool LButtonDownState, bool RButtonDownState) {}
 };

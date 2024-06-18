@@ -80,7 +80,6 @@ private:
 	ID3D12Debug					*DebugController;
 #endif
 
-	Timer						Timer;
 	_TCHAR						FrameRate[50];
 
 public:

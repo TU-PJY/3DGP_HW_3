@@ -37,7 +37,7 @@
 extern int FRAME_BUFFER_WIDTH, FRAME_BUFFER_HEIGHT;
 
 // full screen option
-constexpr bool START_WITH_FULL_SCREEN = true;
+constexpr bool START_WITH_FULL_SCREEN = false;
 
 
 using namespace DirectX;

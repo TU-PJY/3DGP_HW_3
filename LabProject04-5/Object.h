@@ -84,6 +84,10 @@ public:
 	virtual void ReleaseUploadBuffers() {
 		if (ObjectMesh)
 			ObjectMesh->ReleaseUploadBuffers();
+
+		if (TerrainMesh)
+			TerrainMesh->ReleaseUploadBuffers();
+
 	}
 
 	virtual void ReleaseShaderVariables() {}
@@ -114,9 +118,22 @@ public:
 		SetPosition(Position);
 	}
 
-
 	void MoveForward(float Distance) {
 		Position = Vec3::Add(Position, Look, Distance);
+		SetPosition(Position);
+	}
+
+	void MoveStrafeNoY(float Distance) {
+		XMFLOAT3 RightNoY = XMFLOAT3(Right.x, 0, Right.z);
+		RightNoY = Vec3::Normalize(RightNoY);
+		Position = Vec3::Add(Position, RightNoY, Distance);
+		SetPosition(Position);
+	}
+
+	void MoveForwardNoY(float Distance) {
+		XMFLOAT3 LookNoY = XMFLOAT3(Look.x, 0, Look.z);
+		LookNoY = Vec3::Normalize(LookNoY);
+		Position = Vec3::Add(Position, LookNoY, Distance);
 		SetPosition(Position);
 	}
 

@@ -146,3 +146,4 @@ public:
 		}
 	}
 };
+extern Timer timer;

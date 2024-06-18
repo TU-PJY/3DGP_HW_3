@@ -150,6 +150,20 @@ public:
 		RunningMode = Mode;
 	}
 
+	void Rotate(float Pitch, float Yaw, float Roll) {
+		XMVECTOR UpVector = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+		XMVECTOR LookVector = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
+		XMVECTOR RightVector = XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
+
+		XMMATRIX RotateMat = XMMatrixRotationRollPitchYaw(
+			XMConvertToRadians(Pitch),
+			XMConvertToRadians(Yaw),
+			XMConvertToRadians(Roll)
+		);
+
+		Cam4x4View = Mat4::Multiply(RotateMat, Cam4x4View);
+	}
+
 	void SetPosition(XMFLOAT3 Position) { CamPos = Position; }
 	XMFLOAT3& GetPosition() { return(CamPos); }
 

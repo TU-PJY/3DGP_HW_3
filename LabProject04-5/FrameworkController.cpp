@@ -35,36 +35,38 @@ void Framework::KeyboardController(HWND hWnd, UINT nMessageID, WPARAM wParam, LP
 		Mode_1::KeyboardController(hWnd, nMessageID, wParam, lParam);
 }
 
-void Framework::MouseMotionController(HWND hwnd) {
-	if (RunningMode == "Mode1")
-		Mode_1::MouseMotionController(hwnd);
+void Framework::MouseMotionController(HWND hWnd) {
+	if (RunningMode == "Mode1") {
+		if (!SetCaptureLockState) {
+			::SetCapture(hWnd);
+			::GetCursorPos(&fw.PrevCursorPosition);
+			SetCaptureLockState = true;
+		}
+
+		Mode_1::MouseMotionController(hWnd);
+	}
 }
 
 void Framework::MouseController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
 	switch (nMessageID) {
 	case WM_LBUTTONDOWN:
-		::SetCapture(hWnd);
-		::GetCursorPos(&fw.PrevCursorPosition);
 		fw.LButtonDownState = true;
 		break;
 
 	case WM_RBUTTONDOWN:
-		::SetCapture(hWnd);
-		::GetCursorPos(&fw.PrevCursorPosition);
 		fw.RButtonDownState = true;
 		break;
 
 	case WM_LBUTTONUP:
-		::ReleaseCapture();
 		fw.LButtonDownState = false;
 		break;
 
 	case WM_RBUTTONUP:
-		::ReleaseCapture();
 		fw.RButtonDownState = false;
 		break;
 	}
 
-	if (RunningMode == "Mode1")
+	if (RunningMode == "Mode1") {
 		Mode_1::MouseController(hWnd, nMessageID, wParam, lParam);
+	}
 }

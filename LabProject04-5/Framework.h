@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include "Shader.h"
 #include "Mesh.h"
+#include "Timer.h"
 #include <deque>
 #include <ranges>
 #include <unordered_map>
@@ -30,6 +31,8 @@ private:
 	std::unordered_map<std::string, Mesh*> LoadedTerrainList;
 	typedef std::string(*Function)(void);
 
+	bool SetCaptureLockState{};
+
 protected:
 	ID3D12RootSignature* RootSignature = nullptr;
 	std::array<std::deque<OBJ*>, NUM_LAYER> ObjectCont;
@@ -42,8 +45,10 @@ public:
 	void Init(ID3D12Device *Device, ID3D12GraphicsCommandList *CmdList);
 
 	void SetMode(Function ModeFunction) {
+		timer.Stop();
 		ClearAll();
 		RunningMode = ModeFunction();
+		timer.Start();
 	}
 
 	void KeyboardController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
@@ -262,23 +267,23 @@ public:
 		return false;
 	}
 
-	bool CheckTerrainFloor(OBJ* Object, OBJ* Terrain) {
+	bool CheckTerrainFloor(OBJ* Object, OBJ* Terrain, float HeightValue) {
 		if (Terrain->TerrainMesh) {
-			if (Object->Position.y < Terrain->TerrainMesh->GetHeightAtPosition(Terrain->TerrainMesh, Object->Position.x, Object->Position.z, Terrain->Matrix))
+			if (Object->Position.y - HeightValue < Terrain->TerrainMesh->GetHeightAtPosition(Terrain->TerrainMesh, Object->Position.x, Object->Position.z, Terrain->Matrix))
 				return true;
 		}
 
 		return false;
 	}
 
-	void MoveToTerrainFloor(OBJ* Object, OBJ* Terrain) {
-		Object->Position.y = Terrain->TerrainMesh->GetHeightAtPosition(Terrain->TerrainMesh, Object->Position.x, Object->Position.z, Terrain->Matrix);
+	void MoveToTerrainFloor(OBJ* Object, OBJ* Terrain, float HeightValue) {
+		Object->Position.y = Terrain->TerrainMesh->GetHeightAtPosition(Terrain->TerrainMesh, Object->Position.x, Object->Position.z, Terrain->Matrix) + HeightValue;
 	}
 	
-	void CheckCollisionnTerrain(OBJ* Object, OBJ* Terrain) {
+	void CheckCollisionTerrain(OBJ* Object, OBJ* Terrain, float HeightValue) {
 		if (Terrain->TerrainMesh) {
-			if (Object->Position.y < Terrain->TerrainMesh->GetHeightAtPosition(Terrain->TerrainMesh, Object->Position.x, Object->Position.z, Terrain->Matrix))
-				Object->Position.y = Terrain->TerrainMesh->GetHeightAtPosition(Terrain->TerrainMesh, Object->Position.x, Object->Position.z, Terrain->Matrix);
+			if (Object->Position.y - HeightValue < Terrain->TerrainMesh->GetHeightAtPosition(Terrain->TerrainMesh, Object->Position.x, Object->Position.z, Terrain->Matrix))
+				Object->Position.y = Terrain->TerrainMesh->GetHeightAtPosition(Terrain->TerrainMesh, Object->Position.x, Object->Position.z, Terrain->Matrix) + HeightValue;
 		}
 	}
 

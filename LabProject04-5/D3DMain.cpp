@@ -3,6 +3,7 @@
 #include "Camera.h"
 #include "Framework.h"
 
+Timer timer;
 
 void D3DMain::Init() {
 	CmdList->Reset(CmdAllocator, NULL);
@@ -10,11 +11,11 @@ void D3DMain::Init() {
 	fw.Init(Device, CmdList);
 
 	cam.SetPosition(XMFLOAT3(0.0, 0.0, 0.0));
-	cam.SetOffset(XMFLOAT3(0.0f, 5.0f, -13.0f));
+	cam.SetOffset(XMFLOAT3(0.0f, 0.0f, -0.1f));
 	cam.GenerateProjectionMatrix(1.01f, 5000.0f, ASPECT_RATIO, 45.0f);
 	cam.SetViewport(0, 0, FRAME_BUFFER_WIDTH, FRAME_BUFFER_HEIGHT, 0.0f, 1.0f);
 	cam.SetScissorRect(0, 0, FRAME_BUFFER_WIDTH, FRAME_BUFFER_HEIGHT);
-	cam.SetTimeLag(0.1f);
+	cam.SetTimeLag(0.0f);
 	cam.SetCameraMode(CamMode::MODE1);
 
 	CmdList->Close();
@@ -24,7 +25,7 @@ void D3DMain::Init() {
 	WaitForGpuComplete();
 
 	fw.ReleaseUploadBuffers();
-	Timer.Reset();
+	timer.Reset();
 }
 
 
@@ -32,9 +33,9 @@ LRESULT CALLBACK D3DMain::WindowsMessegeFunc(HWND hWnd, UINT nMessageID, WPARAM 
 	switch (nMessageID) {
 	case WM_ACTIVATE: 
 		if (LOWORD(wParam) == WA_INACTIVE)
-			Timer.Stop();
+			timer.Stop();
 		else
-			Timer.Start();
+			timer.Start();
 		break;
 
 	case WM_SIZE:
@@ -57,10 +58,10 @@ LRESULT CALLBACK D3DMain::WindowsMessegeFunc(HWND hWnd, UINT nMessageID, WPARAM 
 
 void D3DMain::Update() {
 	cam.RegenerateViewMatrix();
-	cam.Update(Timer.GetTimeElapsed());
+	cam.Update(timer.GetTimeElapsed());
 
 	fw.MouseMotionController(hWnd);
-	fw.Update(Timer.GetTimeElapsed());
+	fw.Update(timer.GetTimeElapsed());
 }
 
 
@@ -72,7 +73,7 @@ void D3DMain::Render(ID3D12GraphicsCommandList* CmdList) {
 
 
 void D3DMain::Routine() {
-	Timer.Tick(165.0f);
+	timer.Tick(165.0f);
 
 	HRESULT hResult = CmdAllocator->Reset();
 	hResult = CmdList->Reset(CmdAllocator, NULL);
@@ -133,7 +134,7 @@ void D3DMain::Routine() {
 
 	MoveToNextFrame();
 
-	Timer.GetFrameRate(FrameRate + (D3D_WindowNameLength - 1), 37);
+	timer.GetFrameRate(FrameRate + (D3D_WindowNameLength - 1), 37);
 	::SetWindowText(hWnd, FrameRate);
 }
 
@@ -541,8 +542,8 @@ void D3DMain::ReleaseShaderVariables(){}
 
 
 void D3DMain::UpdateShaderVariables() {
-	float CurrentTime = Timer.GetTotalTime();
-	float ElapsedTime = Timer.GetTimeElapsed();
+	float CurrentTime = timer.GetTotalTime();
+	float ElapsedTime = timer.GetTimeElapsed();
 
 	CmdList->SetGraphicsRoot32BitConstants(0, 1, &CurrentTime, 0);
 	CmdList->SetGraphicsRoot32BitConstants(0, 1, &ElapsedTime, 1);
