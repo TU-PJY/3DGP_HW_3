@@ -1,5 +1,5 @@
 #include "Framework.h"
-#include "Mode1.h"
+#include "HomeMode.h"
 
 // global scope shader
 PseudoLightingShader* pShader;
@@ -27,11 +27,14 @@ void Framework::Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
 	LoadMeshFromList(Device, CmdList);
 	LoadTerrainFromList(Device, CmdList);
 
-	SetMode(Mode1);
+	SetMode(HomeMode);
 }
 
 void Framework::KeyboardController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
-	if (RunningMode == "Mode1")
+	if(RunningMode == "HomeMode")
+		Home_Mode::KeyboardController(hWnd, nMessageID, wParam, lParam);
+
+	else if (RunningMode == "Mode1")
 		Mode_1::KeyboardController(hWnd, nMessageID, wParam, lParam);
 }
 

@@ -153,6 +153,7 @@
     <ClInclude Include="Conf.h" />
     <ClInclude Include="D3DMain.h" />
     <ClInclude Include="Mode1.h" />
+    <ClInclude Include="HomeMode.h" />
     <ClInclude Include="Objective-D.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Object.h" />

@@ -12,7 +12,7 @@ void D3DMain::Init() {
 
 	cam.SetPosition(XMFLOAT3(0.0, 0.0, 0.0));
 	cam.SetOffset(XMFLOAT3(0.0f, 0.0f, -0.1f));
-	cam.GenerateProjectionMatrix(1.01f, 5000.0f, ASPECT_RATIO, 45.0f);
+	cam.GenerateProjectionMatrix(1.01f, 5000.0f, ASPECT_RATIO, 65.0f);
 	cam.SetViewport(0, 0, FRAME_BUFFER_WIDTH, FRAME_BUFFER_HEIGHT, 0.0f, 1.0f);
 	cam.SetScissorRect(0, 0, FRAME_BUFFER_WIDTH, FRAME_BUFFER_HEIGHT);
 	cam.SetTimeLag(0.0f);

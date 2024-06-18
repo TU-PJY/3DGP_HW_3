@@ -85,6 +85,9 @@
     <ClInclude Include="Player.h">
       <Filter>%284%29________________Object\%281%29--Custom_Object</Filter>
     </ClInclude>
+    <ClInclude Include="HomeMode.h">
+      <Filter>%285%29_________________Modes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameworkController.cpp">

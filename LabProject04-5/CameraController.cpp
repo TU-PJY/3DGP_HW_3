@@ -5,9 +5,7 @@
 void Camera::Update(float FT) {
 	if (RunningMode == CamMode::MODE1) {
 		auto obj = fw.FindObject("player", LayerRange::Single, Layer::L1);
-		if (obj) {
-			Track(obj->Position, obj, FT);
-		}
+		if (obj) Track(obj->Position, obj, FT);
 	}
 }
 

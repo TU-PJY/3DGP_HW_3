@@ -89,7 +89,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow) {
 
 	Rect = { 0, 0, FRAME_BUFFER_WIDTH, FRAME_BUFFER_HEIGHT };
 	WindowStyle = WS_POPUP;
-	D3D_Main.FullScreenState = true;
+	//D3D_Main.FullScreenState = true;
 
 	AdjustWindowRect(&Rect, WindowStyle, FALSE);
 
@@ -115,8 +115,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow) {
 	::ShowWindow(MainWnd, nCmdShow);
 	::UpdateWindow(MainWnd);
 
-	if (!START_WITH_FULL_SCREEN)
-		D3D_Main.SwitchToWindowMode(MainWnd);
+	//if (!START_WITH_FULL_SCREEN)
+		//D3D_Main.SwitchToWindowMode(MainWnd);
 
 	return(TRUE);
 }

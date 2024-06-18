@@ -10,17 +10,24 @@ private:
 	float MouseSensitivity = 0.3;
 	bool MoveFront{}, MoveBack{}, MoveRight{}, MoveLeft{};
 	float ForwardSpeed{}, StrafeSpeed{};
-
 	float FallingAcc;
 
 	bool JumpState{};
+
+	float WalkingShake{};
+	float ShakeValue{};
+	float LandShake{};
+	float LandShakeValue{};
+	float LandShakeNum{};
+
+	bool SpaceDown{};
 
 public:
 	Player(std::string tag, Layer layer) {
 		ObjectLayer = layer;
 		Tag = tag;
 
-		Position = XMFLOAT3(-30.0, 80.0, 0.0);
+		Position = XMFLOAT3(-30.0, 100.0, 0.0);
 	}
 
 	// 플레이어 이동
@@ -42,21 +49,53 @@ public:
 
 		MoveForwardNoY(ForwardSpeed);
 		MoveStrafe(StrafeSpeed);
+		
 	}
+
+	void UpdateWalkingShake(float FT) {
+		if ((MoveFront || MoveBack || MoveRight || MoveLeft) && !JumpState)
+			ShakeValue += FT * 10;
+
+		else {
+			if (ShakeValue > 1.0)
+				ShakeValue = sin(ShakeValue);
+			LerpDcc(ShakeValue, 5, FT);
+		}
+
+		WalkingShake = sin(ShakeValue) * 2.0;
+	}
+
+	void UpdateLandShake(float FT) {
+		if (LandShakeValue > 0.0) 
+			LandShakeNum += FT * 10;
+
+		LerpDcc(LandShakeValue, 5, FT);
+		LandShake = sin(LandShakeNum) * LandShakeValue;
+	}
+
+	void Render(ID3D12GraphicsCommandList* CmdList) {}
+
 
 	void Update(float FT) {
 		InitTransform();
 
 		MovePlayer(FT);
+		UpdateWalkingShake(FT);
+		UpdateLandShake(FT);
 
-		SetPosition(Position);
-		Rotate(Rotation.x, Rotation.y, Rotation.z);
 
 		auto map = fw.FindObject("terrain", LayerRange::Single, Layer::Terrain);
 		if (map) {
+			float TerrainHeight = map->TerrainMesh->GetHeightAtPosition(map->TerrainMesh, Position.x, Position.z, map->Matrix);
+
 			if (fw.CheckTerrainFloor(this, map, 25.0f) && FallingAcc <= 0) {
-				Position.y = std::lerp(Position.y, map->TerrainMesh->GetHeightAtPosition(map->TerrainMesh, Position.x, Position.z, map->Matrix) + 25.0, FT * 5);
-				//fw.MoveToTerrainFloor(this, map, 25.0f);
+				Position.y = std::lerp(Position.y, TerrainHeight + 25.0, FT * 5);
+
+				if (JumpState && FallingAcc < 0) {
+					LandShakeNum = 0;
+					LandShakeValue = -FallingAcc * 0.25;
+				}
+
 				FallingAcc = 0.0f;
 				JumpState = false;
 			}
@@ -66,6 +105,9 @@ public:
 				Position.y += FallingAcc * FT * 2;
 			}
 		}
+
+		SetPosition(Position.x, Position.y, Position.z);
+		Rotate(Rotation.x + LandShake, Rotation.y, Rotation.z + WalkingShake);
 	}
 
 	void ObjectKeyboardController(UINT nMessageID, WPARAM wParam) {
@@ -100,6 +142,10 @@ public:
 				break;
 
 			case VK_SPACE:
+				if (SpaceDown)
+					break;
+
+				SpaceDown = true;
 				if (!JumpState) {
 					FallingAcc = 60.0f;
 					JumpState = true;
@@ -121,6 +167,9 @@ public:
 				break;
 			case 'A':
 				MoveLeft = false;
+				break;
+			case VK_SPACE:
+				SpaceDown = false;
 				break;
 			}
 			break;
