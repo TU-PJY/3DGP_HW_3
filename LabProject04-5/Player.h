@@ -27,7 +27,7 @@ public:
 		ObjectLayer = layer;
 		Tag = tag;
 
-		Position = XMFLOAT3(-30.0, 100.0, 0.0);
+		Position = XMFLOAT3(0.0, 0.0, 0.0);
 	}
 
 	// 플레이어 이동
@@ -86,14 +86,12 @@ public:
 
 		auto map = fw.FindObject("terrain", LayerRange::Single, Layer::Terrain);
 		if (map) {
-			float TerrainHeight = map->TerrainMesh->GetHeightAtPosition(map->TerrainMesh, Position.x, Position.z, map->Matrix);
-
 			if (fw.CheckTerrainFloor(this, map, 25.0f) && FallingAcc <= 0) {
-				Position.y = std::lerp(Position.y, TerrainHeight + 25.0, FT * 5);
+				fw.MoveToTerrainFloor(this, map, 25.0f);
 
-				if (JumpState && FallingAcc < 0) {
+				if (JumpState) {
 					LandShakeNum = 0;
-					LandShakeValue = -FallingAcc * 0.25;
+					LandShakeValue = -FallingAcc * 0.3;
 				}
 
 				FallingAcc = 0.0f;
