@@ -10,6 +10,7 @@ inline std::string Mode1() {
 	fw.AddObject(new Terrain("terrain", Layer::Terrain), Layer::Terrain);
 	fw.AddObject(new Player("player", Layer::L1), Layer::L1);
 	fw.AddObject(new Gun("gun", Layer::L1), Layer::L1);
+	fw.AddObject(new Fire("fire", Layer::L1), Layer::L1);
 
 	return __func__;
 }
