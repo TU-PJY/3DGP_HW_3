@@ -19,38 +19,35 @@
     <Filter Include="%284%29________________Object\%281%29--Custom_Object">
       <UniqueIdentifier>{03135e75-d38d-4b93-81cb-cd9d7aad3e82}</UniqueIdentifier>
     </Filter>
-    <Filter Include="%287%29____________D3D_System">
+    <Filter Include="%286%29____________D3D_System">
       <UniqueIdentifier>{ef1ecf29-3ada-454b-ac86-babccffd7df9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="%287%29____________D3D_System\%281%29--------Header">
+    <Filter Include="%286%29____________D3D_System\%281%29--------Header">
       <UniqueIdentifier>{843b528d-cf4f-4093-b11b-78a4b66a4263}</UniqueIdentifier>
     </Filter>
-    <Filter Include="%288%29____________Win_System">
+    <Filter Include="%287%29____________Win_System">
       <UniqueIdentifier>{2196dc85-3ef2-4368-a09b-f3ddea5f3fb2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="%288%29____________Win_System\%281%29----------Res">
+    <Filter Include="%287%29____________Win_System\%281%29----------Res">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="%289%29___________________HLSL">
+    <Filter Include="%288%29___________________HLSL">
       <UniqueIdentifier>{ba70de6e-7cb6-4172-be19-be267872509d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="%286%29______________Controller">
-      <UniqueIdentifier>{cc6b1633-4fe7-443c-9241-d96e5dcf7d75}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="%2810%29______________Template">
+    <Filter Include="%289%29______________Template">
       <UniqueIdentifier>{85c882ec-0833-4277-a399-b22fdda1154f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
-      <Filter>%288%29____________Win_System</Filter>
+      <Filter>%287%29____________Win_System</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
-      <Filter>%288%29____________Win_System</Filter>
+      <Filter>%287%29____________Win_System</Filter>
     </ClInclude>
     <ClInclude Include="Objective-D.h">
-      <Filter>%288%29____________Win_System</Filter>
+      <Filter>%287%29____________Win_System</Filter>
     </ClInclude>
     <ClInclude Include="Framework.h">
       <Filter>%283%29_____________Framework</Filter>
@@ -59,34 +56,31 @@
       <Filter>%282%29________________Camera</Filter>
     </ClInclude>
     <ClInclude Include="D3DHeader.h">
-      <Filter>%287%29____________D3D_System\%281%29--------Header</Filter>
+      <Filter>%286%29____________D3D_System\%281%29--------Header</Filter>
     </ClInclude>
     <ClInclude Include="Conf.h">
       <Filter>%281%29__________________CONF</Filter>
     </ClInclude>
-    <ClInclude Include="CustomObjects.h">
-      <Filter>%284%29________________Object\%281%29--Custom_Object</Filter>
-    </ClInclude>
-    <ClInclude Include="ModeHeader.h">
+    <ClInclude Include="Mode1.h">
       <Filter>%285%29_________________Modes</Filter>
     </ClInclude>
     <ClInclude Include="D3DMain.h">
-      <Filter>%287%29____________D3D_System</Filter>
+      <Filter>%286%29____________D3D_System</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">
-      <Filter>%287%29____________D3D_System</Filter>
+      <Filter>%286%29____________D3D_System</Filter>
     </ClInclude>
     <ClInclude Include="Shader.h">
-      <Filter>%287%29____________D3D_System</Filter>
+      <Filter>%286%29____________D3D_System</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">
-      <Filter>%287%29____________D3D_System</Filter>
+      <Filter>%286%29____________D3D_System</Filter>
     </ClInclude>
     <ClInclude Include="Object.h">
       <Filter>%284%29________________Object</Filter>
     </ClInclude>
-    <ClInclude Include="Controller.h">
-      <Filter>%286%29______________Controller</Filter>
+    <ClInclude Include="Terrain.h">
+      <Filter>%284%29________________Object\%281%29--Custom_Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -94,42 +88,42 @@
       <Filter>%283%29_____________Framework</Filter>
     </ClCompile>
     <ClCompile Include="D3DHeader.cpp">
-      <Filter>%287%29____________D3D_System\%281%29--------Header</Filter>
+      <Filter>%286%29____________D3D_System\%281%29--------Header</Filter>
     </ClCompile>
     <ClCompile Include="WinMain.cpp">
-      <Filter>%288%29____________Win_System</Filter>
+      <Filter>%287%29____________Win_System</Filter>
     </ClCompile>
     <ClCompile Include="CameraController.cpp">
       <Filter>%282%29________________Camera</Filter>
     </ClCompile>
     <ClCompile Include="D3DMain.cpp">
-      <Filter>%287%29____________D3D_System</Filter>
+      <Filter>%286%29____________D3D_System</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="LabProject04-5.rc">
-      <Filter>%288%29____________Win_System\%281%29----------Res</Filter>
+      <Filter>%287%29____________Win_System\%281%29----------Res</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
-      <Filter>%288%29____________Win_System\%281%29----------Res</Filter>
+      <Filter>%287%29____________Win_System\%281%29----------Res</Filter>
     </Image>
     <Image Include="LabProject04-5.ico">
-      <Filter>%288%29____________Win_System\%281%29----------Res</Filter>
+      <Filter>%287%29____________Win_System\%281%29----------Res</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders.hlsl">
-      <Filter>%289%29___________________HLSL</Filter>
+      <Filter>%288%29___________________HLSL</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ClassTemplate.txt">
-      <Filter>%2810%29______________Template</Filter>
+      <Filter>%289%29______________Template</Filter>
     </Text>
     <Text Include="ControllerTemplate.txt">
-      <Filter>%2810%29______________Template</Filter>
+      <Filter>%289%29______________Template</Filter>
     </Text>
   </ItemGroup>
 </Project>

@@ -1,6 +1,5 @@
 #include "Framework.h"
-#include "ModeHeader.h"
-#include "Controller.h"
+#include "Mode1.h"
 
 // global scope shader
 PseudoLightingShader* pShader;
