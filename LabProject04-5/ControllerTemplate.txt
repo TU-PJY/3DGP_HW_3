@@ -1,0 +1,7 @@
+namespace NameSpace {
+	inline void KeyboardController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {}
+
+	inline void MouseMotionController(HWND hwnd) {}
+
+	inline void MouseController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {}
+}
