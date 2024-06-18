@@ -36,6 +36,8 @@ public:
 	OBJ() {}
 	~OBJ() {}
 
+	virtual bool GetFireState() { return {}; }
+
 	void SetMesh(Mesh* MeshData) {
 		ObjectMesh = MeshData;
 	}

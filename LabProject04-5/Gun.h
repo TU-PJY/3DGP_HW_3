@@ -19,6 +19,10 @@ public:
 		Tag = tag;
 	}
 
+	bool GetFireState() {
+		return FireState;
+	}
+
 	void Update(float FT) {
 		InitTransform();
 
@@ -58,7 +62,13 @@ public:
 
 	void ObjectMouseMotionController(POINT PrevCursorPos, bool LButtonDownState, bool RButtonDownState) {}
 
-	void ObjectMouseController(POINT CursorPos, bool LButtonDownState, bool RButtonDownState) {}
+	void ObjectMouseController(POINT CursorPos, bool LButtonDownState, bool RButtonDownState) {
+		if (LButtonDownState)
+			FireState = true;
+
+		if (!LButtonDownState)
+			FireState = false;
+	}
 };
 
 
@@ -84,5 +94,20 @@ public:
 		}
 		SetPosition(Position);
 		Rotate(Rotation.x, Rotation.y, Rotation.z);
+	}
+
+	void Render(ID3D12GraphicsCommandList* CmdList) {
+		if (ObjectShader)
+			ObjectShader->Render(CmdList);
+
+		UpdateShaderVariables(CmdList);
+
+		auto gun = fw.FindObject("gun", LayerRange::Single, Layer::L1);
+		if (gun) {
+			if (gun->GetFireState()) {
+				if (ObjectMesh)
+					ObjectMesh->Render(CmdList);
+			}
+		}
 	}
 };
