@@ -3,6 +3,7 @@
 
 
 void Camera::Update(float FT) {
+	// 카메라는 실시간으로 플레이어 추적
 	if (RunningMode == CamMode::MODE1) {
 		auto obj = fw.FindObject("player", LayerRange::Single, Layer::L1);
 		if (obj) Track(obj->Position, obj, FT);

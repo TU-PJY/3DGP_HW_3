@@ -52,6 +52,7 @@ public:
 		
 	}
 
+	// 걷기 모션 업데이트
 	void UpdateWalkingShake(float FT) {
 		if ((MoveFront || MoveBack || MoveRight || MoveLeft) && !JumpState)
 			ShakeValue += FT * 10;
@@ -65,6 +66,7 @@ public:
 		WalkingShake = sin(ShakeValue) * 2.0;
 	}
 
+	// 착지 모션 업데이트
 	void UpdateLandShake(float FT) {
 		if (LandShakeValue > 0.0) 
 			LandShakeNum += FT * 10;
@@ -73,6 +75,7 @@ public:
 		LandShake = sin(LandShakeNum) * LandShakeValue;
 	}
 
+	// 플레이어는 쉐이더, 매쉬가 없는 객체이므로 렌더링 작업 생략
 	void Render(ID3D12GraphicsCommandList* CmdList) {}
 
 
@@ -83,7 +86,7 @@ public:
 		UpdateWalkingShake(FT);
 		UpdateLandShake(FT);
 
-
+		// 맵에 착지하면 흔들림 모션이 발생한다
 		auto map = fw.FindObject("terrain", LayerRange::Single, Layer::Terrain);
 		if (map) {
 			if (fw.CheckTerrainFloor(this, map, 25.0f) && FallingAcc <= 0) {
@@ -99,6 +102,7 @@ public:
 			}
 
 			else {
+				// 높은곳에서 떨어질수록 더 많이 흔들리게 된다
 				FallingAcc -= FT * 150;
 				Position.y += FallingAcc * FT * 2;
 			}
@@ -143,6 +147,7 @@ public:
 				if (SpaceDown)
 					break;
 
+				// 점프 키는 한 번에 한 번씩만 누르도록 한다
 				SpaceDown = true;
 				if (!JumpState) {
 					FallingAcc = 60.0f;

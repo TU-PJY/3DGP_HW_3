@@ -152,6 +152,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Conf.h" />
     <ClInclude Include="D3DMain.h" />
+    <ClInclude Include="Gun.h" />
     <ClInclude Include="Mode1.h" />
     <ClInclude Include="HomeMode.h" />
     <ClInclude Include="Objective-D.h" />

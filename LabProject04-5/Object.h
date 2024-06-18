@@ -109,6 +109,12 @@ public:
 		Matrix._43 = Position.z;
 	}
 
+	void Translate(float x, float y, float z) {
+		Matrix._41 += x;
+		Matrix._42 += y;
+		Matrix._43 += z;
+	}
+
 	void SetColor(XMFLOAT3 Color) { 
 		ModelColor = Color; 
 	}

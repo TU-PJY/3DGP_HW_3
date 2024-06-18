@@ -14,6 +14,7 @@ Camera cam;
 std::unordered_map<std::string, char*> MeshList {
 	{ "pUfoMesh", "Models//UFO.txt" },
 	{ "pFlyerMesh", "Models//FlyerPlayerShip.txt" },
+	{ "pM60Mesh", "Models//m60.txt" },
 };
 
 // teerain list to load
