@@ -22,6 +22,8 @@ private:
 
 	bool SpaceDown{};
 
+	int HP = 3;
+
 public:
 	Player(std::string tag, Layer layer) {
 		ObjectLayer = layer;
@@ -32,6 +34,10 @@ public:
 
 	void GiveRecoil(float Value) {
 		Rotation.x -= Value;
+	}
+
+	void GiveDemage(int Damage) {
+		HP -= Damage;
 	}
 
 	// 플레이어 이동

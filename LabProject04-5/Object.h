@@ -42,6 +42,7 @@ public:
 
 	virtual bool GetFireState() { return {}; }
 	virtual void GiveRecoil(float Value) {}
+	virtual void GiveDemage(int Damage) {}
 
 	void SetMesh(Mesh* MeshData) {
 		ObjectMesh = MeshData;
@@ -111,10 +112,14 @@ public:
 		Matrix._43 = z;
 	}
 
-	void SetPosition(XMFLOAT3 Position) {
-		Matrix._41 = Position.x;
-		Matrix._42 = Position.y;
-		Matrix._43 = Position.z;
+	void SetPosition(XMFLOAT3 position) {
+		Matrix._41 = position.x;
+		Matrix._42 = position.y;
+		Matrix._43 = position.z;
+
+		Position.x = position.x;
+		Position.y = position.y;
+		Position.z = position.z;
 	}
 
 	void Translate(float x, float y, float z) {
@@ -123,20 +128,16 @@ public:
 		Matrix._43 += z;
 	}
 
-	XMFLOAT3 GetLook() {
-		return(Vec3::Normalize(XMFLOAT3(Matrix._31, Matrix._32, Matrix._33)));
-	}
-
-	XMFLOAT3 GetUp() {
-		return(Vec3::Normalize(XMFLOAT3(Matrix._21, Matrix._22, Matrix._23)));
-	}
-
-	XMFLOAT3 GetRight() {
-		return(Vec3::Normalize(XMFLOAT3(Matrix._11, Matrix._12, Matrix._13)));
-	}
-
 	void SetColor(XMFLOAT3 Color) { 
 		ModelColor = Color; 
+	}
+
+	float CalcDistance(XMFLOAT3 P1, XMFLOAT3 P2) {
+		float dx = P2.x - P1.x;
+		float dy = P2.y - P1.y;
+		float dz = P2.z - P1.z;
+
+		return std::sqrt(dx * dx + dy * dy + dz * dz);
 	}
 
 	void MoveStrafe(float Distance) {
@@ -229,12 +230,15 @@ public:
 		Look = Vec3::Normalize(XMFLOAT3(Matrix._31, Matrix._32, Matrix._33));
 	}
 
-
 	void LookTo(XMFLOAT3& xmf3LookTo, XMFLOAT3& xmf3Up) {
 		XMFLOAT4X4 xmf4x4View = Mat4::LookToLH(Position, xmf3LookTo, xmf3Up);
 		Matrix._11 = xmf4x4View._11; Matrix._12 = xmf4x4View._21; Matrix._13 = xmf4x4View._31;
 		Matrix._21 = xmf4x4View._12; Matrix._22 = xmf4x4View._22; Matrix._23 = xmf4x4View._32;
 		Matrix._31 = xmf4x4View._13; Matrix._32 = xmf4x4View._23; Matrix._33 = xmf4x4View._33;
+
+		Up = Vec3::Normalize(XMFLOAT3(Matrix._21, Matrix._22, Matrix._23));
+		Right = Vec3::Normalize(XMFLOAT3(Matrix._11, Matrix._12, Matrix._13));
+		Look = Vec3::Normalize(XMFLOAT3(Matrix._31, Matrix._32, Matrix._33));
 	}
 
 

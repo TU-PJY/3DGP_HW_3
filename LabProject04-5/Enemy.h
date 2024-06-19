@@ -7,7 +7,7 @@
 class Enemy : public OBJ {
 private:
 	float HP = 1.0;
-	float MissileDelay = 40;
+	float MissileDelay = 20;
 	XMFLOAT3 LookAtPlayer{};
 public:
 	Enemy(std::string tag, Layer layer) {
@@ -27,9 +27,9 @@ public:
 		if (MissileDelay <= 0) {
 			auto player = fw.FindObject("player", LayerRange::Single, Layer::L1);
 			if (player) {
-				fw.AddObject(new EnemyMissile("missile", Layer::L2, GetUp(), GetLook(), Position), Layer::L2);
+				fw.AddObject(new EnemyMissile("missile", Layer::L2, Up, Look, Position), Layer::L2);
 			}
-			MissileDelay = 40;
+			MissileDelay = 20;
 		}
 
 		//  플레이어를 따라다닌다
