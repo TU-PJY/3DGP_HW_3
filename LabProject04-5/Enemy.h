@@ -17,20 +17,22 @@ public:
 
 		ObjectLayer = layer;
 		Tag = tag;
-		Position = XMFLOAT3(100, 100, 20);
+		Position = XMFLOAT3(0.0, 100, 200);
 		SetPosition(Position);
 	}
 
-	void Update(float FT) {
-		SetPosition(Position);
+	void UpdateMissile(float FT) {
 		MissileDelay -= FT * 10;
 		if (MissileDelay <= 0) {
-			auto player = fw.FindObject("player", LayerRange::Single, Layer::L1);
-			if (player) {
-				fw.AddObject(new EnemyMissile("missile", Layer::L2, Up, Look, Position), Layer::L2);
-			}
+			fw.AddObject(new EnemyMissile("missile", Layer::L2, Up, Look, Position), Layer::L2);
 			MissileDelay = 20;
 		}
+	}
+
+	void Update(float FT) {
+
+		// 미사일 발사 업데이트
+		UpdateMissile(FT);
 
 		//  플레이어를 따라다닌다
 		auto player = fw.FindObject("player", LayerRange::Single, Layer::L1);
@@ -61,24 +63,11 @@ public:
 				if (fw.CheckCollision(this, ammo)) {
 					HP -= 0.005;
 					if (HP <= 0)
-						HP = 0;
+						fw.ReserveMode("HomeMode");
+
 					SetColor(XMFLOAT3(1.0 - HP, 0.0, HP));
 				}
 			}
-		}
-	}
-
-	void CheckDelete() {
-
-	}
-
-	void ObjectKeyboardController(UINT nMessageID, WPARAM wParam) {
-		switch (nMessageID) {
-		case WM_KEYDOWN:
-			break;
-
-		case WM_KEYUP:
-			break;
 		}
 	}
 };

@@ -20,7 +20,7 @@ public:
 	}
 
 	void Update(float FT) {
-		Move(MovingDirection,  FT * 200);
+		Move(MovingDirection,  FT * 400);
 
 		MoveDistance += FT * 200;
 

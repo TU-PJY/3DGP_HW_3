@@ -1,6 +1,6 @@
 #include "Framework.h"
-#include "HomeMode.h"
 #include "Mode1.h"
+#include "HomeMode.h"
 
 // global scope shader
 PseudoLightingShader* pShader;
@@ -16,7 +16,8 @@ std::unordered_map<std::string, char*> MeshList {
 	{ "pFireMesh", "Models//fire.txt" },
 	{ "pAmmoMesh", "Models//ammo.txt"},
 	{ "pEnemyMesh", "Models//UFO.txt" },
-	{"pMissileMesh", "Models//missile.txt"}
+	{"pMissileMesh", "Models//missile.txt"},
+	{ "pMenuMesh", "Models//start_menu.txt"}
 };
 
 // teerain list to load
@@ -31,7 +32,15 @@ void Framework::Init(ID3D12Device* Device, ID3D12GraphicsCommandList* CmdList) {
 	LoadMeshFromList(Device, CmdList);
 	LoadTerrainFromList(Device, CmdList);
 
-	SetMode(Mode1);
+	SetMode(HomeMode);
+}
+
+void Framework::SwitchMode(std::string ModeName) {
+	if (ModeName == "HomeMode")
+		SetMode(HomeMode);
+
+	else if (ModeName == "MainMode")
+		SetMode(Mode1);
 }
 
 void Framework::KeyboardController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {

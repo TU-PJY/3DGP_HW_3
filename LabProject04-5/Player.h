@@ -2,6 +2,7 @@
 #include "Framework.h"
 #include "Object.h"
 #include <string>
+#include <random>
 
 // 1인칭 게임이므로 매쉬를 가지고 있지 않는다
 class Player : public OBJ {
@@ -29,7 +30,7 @@ public:
 		ObjectLayer = layer;
 		Tag = tag;
 
-		Position = XMFLOAT3(0.0, 0.0, 0.0);
+		Position = XMFLOAT3(0.0, 100.0, 0.0);
 	}
 
 	void GiveRecoil(float Value) {
@@ -37,19 +38,22 @@ public:
 	}
 
 	void GiveDemage(int Damage) {
+		// 플레이어가 죽으면 게임 오버
 		HP -= Damage;
+		if (HP == 0)
+			fw.ReserveMode("HomeMode");
 	}
 
 	// 플레이어 이동
 	void MovePlayer(float FT) {
 		if (MoveFront)
-			LerpAcc(ForwardSpeed, 0.2, 5, FT);
+			LerpAcc(ForwardSpeed, 0.4, 5, FT);
 		if (MoveBack)
-			LerpAcc(ForwardSpeed, -0.2, 5, FT);
+			LerpAcc(ForwardSpeed, -0.4, 5, FT);
 		if (MoveRight)
-			LerpAcc(StrafeSpeed, 0.2, 5, FT);
+			LerpAcc(StrafeSpeed, 0.4, 5, FT);
 		if (MoveLeft)
-			LerpAcc(StrafeSpeed, -0.2, 5, FT);
+			LerpAcc(StrafeSpeed, -0.4, 5, FT);
 
 		if(!MoveFront && !MoveBack)
 			LerpDcc(ForwardSpeed, 5, FT);
@@ -59,7 +63,6 @@ public:
 
 		MoveForwardNoY(ForwardSpeed);
 		MoveStrafe(StrafeSpeed);
-		
 	}
 
 	// 걷기 모션 업데이트
@@ -121,6 +124,7 @@ public:
 		SetPosition(Position.x, Position.y, Position.z);
 		Rotate(Rotation.x + LandShake, Rotation.y, Rotation.z + WalkingShake);
 	}
+
 
 	void ObjectKeyboardController(UINT nMessageID, WPARAM wParam) {
 		switch (nMessageID) {

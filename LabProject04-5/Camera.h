@@ -226,6 +226,13 @@ public:
 		CamLook = XMFLOAT3(mtxLookAt._13, mtxLookAt._23, mtxLookAt._33);
 	}
 
+	void SetLookAt(XMFLOAT3& LookAt) {
+		XMFLOAT4X4 mtxLookAt = Mat4::LookAtLH(CamPos, LookAt, XMFLOAT3(0.0, 1.0, 0.0));
+		CamRight = XMFLOAT3(mtxLookAt._11, mtxLookAt._21, mtxLookAt._31);
+		CamUp = XMFLOAT3(mtxLookAt._12, mtxLookAt._22, mtxLookAt._32);
+		CamLook = XMFLOAT3(mtxLookAt._13, mtxLookAt._23, mtxLookAt._33);
+	}
+
 	void CalculateFrustumPlanes() {
 #ifdef _WITH_DIERECTX_MATH_FRUSTUM
 		CamFrustumView.Transform(CamFrustumWorld, XMMatrixInverse(NULL, XMLoadFloat4x4(&Cam4x4View)));

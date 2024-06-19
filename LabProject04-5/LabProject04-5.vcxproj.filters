@@ -100,6 +100,9 @@
     <ClInclude Include="EnemyMissile.h">
       <Filter>%284%29________________Object\%281%29--Custom_Object</Filter>
     </ClInclude>
+    <ClInclude Include="StartMenu.h">
+      <Filter>%284%29________________Object\%281%29--Custom_Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameworkController.cpp">

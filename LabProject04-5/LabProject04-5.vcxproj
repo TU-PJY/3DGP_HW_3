@@ -166,6 +166,7 @@
     <ClInclude Include="Framework.h" />
     <ClInclude Include="D3DHeader.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="StartMenu.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="Timer.h" />

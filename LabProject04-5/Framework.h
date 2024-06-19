@@ -31,7 +31,13 @@ private:
 	std::unordered_map<std::string, Mesh*> LoadedTerrainList;
 	typedef std::string(*Function)(void);
 
+	// 모드 변경 상태, 모드 변경 예약 상태
+	bool SwitchState{};
+	bool SwitchReserveState{};
+
 	bool SetCaptureLockState{};
+
+	std::string Buffer{};
 
 protected:
 	ID3D12RootSignature* RootSignature = nullptr;
@@ -44,22 +50,38 @@ public:
 
 	void Init(ID3D12Device *Device, ID3D12GraphicsCommandList *CmdList);
 
+	// 모드 변경
 	void SetMode(Function ModeFunction) {
-		timer.Stop();
+		// 객체를 모두 지우고 새로운 객체들로 채운다
 		ClearAll();
+		// 모드 이름을 변경하면서 객체를 추가한다
 		RunningMode = ModeFunction();
-		timer.Start();
+
+		// 다시 업데이트 루프를 돌도록 한다
+		SetCaptureLockState = false;
+		SwitchState = false;
 	}
+
+	// 모드 변경 예약, 반복자 무효화를 피하기 위함
+	void ReserveMode(std::string ModeName) {
+		Buffer = ModeName;
+		SwitchReserveState = true;
+	}
+
+	// 예약한 모드 이름에 따라 다른 모드로 전환한다
+	void SwitchMode(std::string ModeName);
 
 	void KeyboardController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
 	void MouseController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam);
 	void MouseMotionController(HWND hwnd);
 
 	void Update(float FT) {
-		for (int i = 0; i < NUM_LAYER; ++i) {
-			for (auto It = std::ranges::begin(ObjectCont[i]); It != std::ranges::end(ObjectCont[i]); ) {
-				if (*It) (*It)->Update(FT);
-				if (*It) ++It;
+		if (!SwitchState) {
+			for (int i = 0; i < NUM_LAYER; ++i) {
+				for (auto It = std::ranges::begin(ObjectCont[i]); It != std::ranges::end(ObjectCont[i]); ) {
+					if (*It) (*It)->Update(FT);
+					if (*It) ++It;
+				}
 			}
 		}
 	}
@@ -68,14 +90,23 @@ public:
 		cam.SetViewportsAndScissorRects(CmdList);
 		cam.UpdateShaderVariables(CmdList);
 
-		for (int i = 0; i < NUM_LAYER; ++i) {
-			for (auto It = std::ranges::begin(ObjectCont[i]); It != std::ranges::end(ObjectCont[i]); ) {
-				if (*It) (*It)->Render(CmdList);
-				if (*It) (*It)->ProcessDelete();
+		if (!SwitchState) {
+			for (int i = 0; i < NUM_LAYER; ++i) {
+				for (auto It = std::ranges::begin(ObjectCont[i]); It != std::ranges::end(ObjectCont[i]); ) {
+					if (*It) (*It)->Render(CmdList);
+					if (*It) (*It)->ProcessDelete();
 
-				if(!*It) It = ObjectCont[i].erase(It);
-				else ++It;
+					if (!*It) It = ObjectCont[i].erase(It);
+					else ++It;
+				}
 			}
+		}
+
+		// 모드 변경 예약 상태라면 루프를 중단시킨 후 모드 전환 작업을 시작한다
+		if (SwitchReserveState) {
+			SwitchState = true;
+			SwitchReserveState = false;
+			SwitchMode(Buffer);
 		}
 	}
 
@@ -92,64 +123,6 @@ public:
 		if (It != std::ranges::end(ObjectCont[layer])) {
 			delete* It;
 			*It = nullptr;
-		}
-	}
-
-	void DeleteObject(std::string ObjectTag, ObjectRange Range1, LayerRange Range2, Layer Layer = static_cast<Layer>(0)) {
-		int layer = static_cast<int>(Layer);
-
-		if (Range1 == ObjectRange::Single) {
-			if (Range2 == LayerRange::Single) {
-				auto It = std::ranges::find_if(ObjectCont[layer], [&ObjectTag](OBJ*& obj) { return obj->Tag == ObjectTag; });
-
-				if (It != std::ranges::end(ObjectCont[layer])) {
-					delete* It;
-					*It = nullptr;
-				}
-			}
-
-			else if (Range2 == LayerRange::All) {
-				for (int i = 0; i < NUM_LAYER; ++i) {
-					auto It = std::ranges::find_if(ObjectCont[i], [&ObjectTag](OBJ*& obj) { return obj->Tag == ObjectTag; });
-
-					if (It != std::ranges::end(ObjectCont[i])) {
-						delete *It;
-						*It = nullptr;
-
-						return;
-					}
-				}
-			}
-		}
-
-		else if (Range1 == ObjectRange::All) {
-			if (Range2 == LayerRange::Single) {
-				auto It = std::ranges::begin(ObjectCont[layer]);
-
-				while (It != std::ranges::end(ObjectCont[layer])) {
-					It = std::ranges::find_if(ObjectCont[layer], [&ObjectTag](OBJ*& Obj) { return Obj->Tag == ObjectTag; });
-
-					if (It != std::ranges::end(ObjectCont[layer])) {
-						delete* It;
-						*It = nullptr;
-					}
-				}
-			}
-
-			else if (Range2 == LayerRange::All) {
-				for (int i = 0; i < NUM_LAYER; ++i) {
-					auto It = std::ranges::begin(ObjectCont[i]);
-
-					while (It != std::ranges::end(ObjectCont[i])) {
-						It = std::ranges::find_if(ObjectCont[i], [&ObjectTag](OBJ*& Obj) { return Obj->Tag == ObjectTag; });
-
-						if (It != std::ranges::end(ObjectCont[i])) {
-							delete* It;
-							*It = nullptr;
-						}
-					}
-				}
-			}
 		}
 	}
 

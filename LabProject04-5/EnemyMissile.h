@@ -21,7 +21,7 @@ public:
 	}
 
 	void Update(float FT) {
-		Move(MovingDirection, FT * 100);
+		Move(MovingDirection, FT * 200);
 		Rotate(0.0, 0.0, 500 * FT);
 
 		SetPosition(Position);

@@ -17,6 +17,7 @@ inline std::string Mode1() {
 	return __func__;
 }
 
+// 메인모드 컨트롤러
 namespace Mode_1 {
 	inline void KeyboardController(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
 		switch (nMessageID) {
