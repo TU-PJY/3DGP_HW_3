@@ -123,6 +123,18 @@ public:
 		Matrix._43 += z;
 	}
 
+	XMFLOAT3 GetLook() {
+		return(Vec3::Normalize(XMFLOAT3(Matrix._31, Matrix._32, Matrix._33)));
+	}
+
+	XMFLOAT3 GetUp() {
+		return(Vec3::Normalize(XMFLOAT3(Matrix._21, Matrix._22, Matrix._23)));
+	}
+
+	XMFLOAT3 GetRight() {
+		return(Vec3::Normalize(XMFLOAT3(Matrix._11, Matrix._12, Matrix._13)));
+	}
+
 	void SetColor(XMFLOAT3 Color) { 
 		ModelColor = Color; 
 	}
@@ -162,6 +174,11 @@ public:
 		Position.y = Matrix._42 + vDirection.y * fSpeed;
 		Position.z = Matrix._43 + vDirection.z * fSpeed;
 		//SetPosition(Matrix._41 + vDirection.x * fSpeed, Matrix._42 + vDirection.y * fSpeed, Matrix._43 + vDirection.z * fSpeed);
+	}
+
+	void MoveNoY(XMFLOAT3& vDirection, float fSpeed){
+		Position.x = Matrix._41 + vDirection.x * fSpeed;
+		Position.z = Matrix._43 + vDirection.z * fSpeed;
 	}
 
 	void Rotate(float Pitch, float Yaw, float Roll) {
@@ -211,6 +228,15 @@ public:
 		Right = Vec3::Normalize(XMFLOAT3(Matrix._11, Matrix._12, Matrix._13));
 		Look = Vec3::Normalize(XMFLOAT3(Matrix._31, Matrix._32, Matrix._33));
 	}
+
+
+	void LookTo(XMFLOAT3& xmf3LookTo, XMFLOAT3& xmf3Up) {
+		XMFLOAT4X4 xmf4x4View = Mat4::LookToLH(Position, xmf3LookTo, xmf3Up);
+		Matrix._11 = xmf4x4View._11; Matrix._12 = xmf4x4View._21; Matrix._13 = xmf4x4View._31;
+		Matrix._21 = xmf4x4View._12; Matrix._22 = xmf4x4View._22; Matrix._23 = xmf4x4View._32;
+		Matrix._31 = xmf4x4View._13; Matrix._32 = xmf4x4View._23; Matrix._33 = xmf4x4View._33;
+	}
+
 
 	void SetMovingDirection(XMFLOAT3& xmf3MovingDirection) {
 		MovingDirection = Vec3::Normalize(xmf3MovingDirection);

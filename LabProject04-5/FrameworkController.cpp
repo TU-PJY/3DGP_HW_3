@@ -12,11 +12,11 @@ Camera cam;
 
 // mesh list to load
 std::unordered_map<std::string, char*> MeshList {
-	{ "pUfoMesh", "Models//UFO.txt" },
-	{ "pFlyerMesh", "Models//FlyerPlayerShip.txt" },
 	{ "pM60Mesh", "Models//m60.txt" },
 	{ "pFireMesh", "Models//fire.txt" },
-	{ "pAmmoMesh", "Models//ammo.txt"}
+	{ "pAmmoMesh", "Models//ammo.txt"},
+	{ "pEnemyMesh", "Models//UFO.txt" },
+	{"pMissileMesh", "Models//missile.txt"}
 };
 
 // teerain list to load

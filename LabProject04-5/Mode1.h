@@ -3,6 +3,7 @@
 #include "Terrain.h"
 #include "Player.h"
 #include "Gun.h"
+#include "Enemy.h"
 #include <string>
 
 // 함수 이름이 곧 실행 중인 모드 이름이 된다
@@ -11,6 +12,7 @@ inline std::string Mode1() {
 	fw.AddObject(new Player("player", Layer::L1), Layer::L1);
 	fw.AddObject(new Gun("gun", Layer::L1), Layer::L1);
 	fw.AddObject(new Fire("fire", Layer::L1), Layer::L1);
+	fw.AddObject(new Enemy("enemy", Layer::L3), Layer::L3);
 
 	return __func__;
 }

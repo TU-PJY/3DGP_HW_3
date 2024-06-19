@@ -25,10 +25,12 @@ public:
 		MoveDistance += FT * 200;
 
 		SetPosition(Position);
+
+		UpdateOOBB();
 	}
 
 	void ProcessDelete() {
-		// 일정 거리 이상 움직이거나 맵에 부딫히면 스스로 삭제한다
+		// 일정 거리 이상 움직이거나 맵에 부딫히거냐 적과 충돌하면 스스로 삭제한다 
 		if (MoveDistance >= 250)
 			fw.DeleteObject(this, ObjectLayer);
 
@@ -36,6 +38,12 @@ public:
 		if (map) {
 		if (fw.CheckTerrainFloor(this, map, 0.0))
 			fw.DeleteObject(this, ObjectLayer);
+		}
+
+		auto enemy = fw.FindObject("enemy", LayerRange::Single, Layer::L3);
+		if (enemy) {
+			if (fw.CheckCollision(this, enemy))
+				fw.DeleteObject(this, ObjectLayer);
 		}
 	}
 };

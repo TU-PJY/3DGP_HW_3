@@ -153,6 +153,8 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Conf.h" />
     <ClInclude Include="D3DMain.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyMissile.h" />
     <ClInclude Include="Gun.h" />
     <ClInclude Include="Mode1.h" />
     <ClInclude Include="HomeMode.h" />
