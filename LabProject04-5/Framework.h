@@ -71,7 +71,10 @@ public:
 		for (int i = 0; i < NUM_LAYER; ++i) {
 			for (auto It = std::ranges::begin(ObjectCont[i]); It != std::ranges::end(ObjectCont[i]); ) {
 				if (*It) (*It)->Render(CmdList);
-				if (*It) ++It;
+				if (*It) (*It)->ProcessDelete();
+
+				if(!*It) It = ObjectCont[i].erase(It);
+				else ++It;
 			}
 		}
 	}
@@ -89,7 +92,6 @@ public:
 		if (It != std::ranges::end(ObjectCont[layer])) {
 			delete* It;
 			*It = nullptr;
-			It = ObjectCont[layer].erase(It);
 		}
 	}
 
@@ -103,7 +105,6 @@ public:
 				if (It != std::ranges::end(ObjectCont[layer])) {
 					delete* It;
 					*It = nullptr;
-					It = ObjectCont[layer].erase(It);
 				}
 			}
 
@@ -114,7 +115,6 @@ public:
 					if (It != std::ranges::end(ObjectCont[i])) {
 						delete *It;
 						*It = nullptr;
-						It = ObjectCont[layer].erase(It);
 
 						return;
 					}
@@ -132,7 +132,6 @@ public:
 					if (It != std::ranges::end(ObjectCont[layer])) {
 						delete* It;
 						*It = nullptr;
-						It = ObjectCont[layer].erase(It);
 					}
 				}
 			}
@@ -147,7 +146,6 @@ public:
 						if (It != std::ranges::end(ObjectCont[i])) {
 							delete* It;
 							*It = nullptr;
-							It = ObjectCont[i].erase(It);
 						}
 					}
 				}

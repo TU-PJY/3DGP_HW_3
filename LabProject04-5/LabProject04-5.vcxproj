@@ -149,6 +149,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Ammo.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Conf.h" />
     <ClInclude Include="D3DMain.h" />

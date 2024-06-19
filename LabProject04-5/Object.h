@@ -18,6 +18,10 @@ public:
 
 	XMFLOAT3 Position{};
 	XMFLOAT3 Rotation{};
+	XMFLOAT3 MovingDirection{};
+
+	float MoveTime{};
+
 
 	XMFLOAT3 Look{0.0, 0.0, 1.0};
 	XMFLOAT3 Up{0.0, 1.0, 0.0};
@@ -66,6 +70,8 @@ public:
 			TerrainMesh->Render(CmdList);
 	}
 
+	virtual void ProcessDelete() {}
+
 	virtual void ObjectKeyboardController(UINT nMessageID, WPARAM wParam) {}
 	virtual void ObjectMouseController(POINT CursorPos, bool LButtonDownState, bool RButtonDownState) {}
 	virtual void ObjectMouseMotionController(POINT PrevCursorPos, bool LButtonDownState, bool RButtonDownState) {}
@@ -90,7 +96,6 @@ public:
 
 		if (TerrainMesh)
 			TerrainMesh->ReleaseUploadBuffers();
-
 	}
 
 	virtual void ReleaseShaderVariables() {}
@@ -152,6 +157,13 @@ public:
 		SetPosition(Position);
 	}
 
+	void Move(XMFLOAT3& vDirection, float fSpeed) {
+		Position.x = Matrix._41 + vDirection.x * fSpeed;
+		Position.y = Matrix._42 + vDirection.y * fSpeed;
+		Position.z = Matrix._43 + vDirection.z * fSpeed;
+		//SetPosition(Matrix._41 + vDirection.x * fSpeed, Matrix._42 + vDirection.y * fSpeed, Matrix._43 + vDirection.z * fSpeed);
+	}
+
 	void Rotate(float Pitch, float Yaw, float Roll) {
 		XMVECTOR UpVector = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 		XMVECTOR LookVector = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
@@ -200,8 +212,17 @@ public:
 		Look = Vec3::Normalize(XMFLOAT3(Matrix._31, Matrix._32, Matrix._33));
 	}
 
+	void SetMovingDirection(XMFLOAT3& xmf3MovingDirection) {
+		MovingDirection = Vec3::Normalize(xmf3MovingDirection);
+	}
+
+
 	void UpdateRotation(float Pitch, float Yaw, float Roll) {
 		Rotation.x += Pitch;
+		if (Rotation.x >= 89)
+			Rotation.x = 89;
+		if (Rotation.x <= -89)
+			Rotation.x = -89;
 		Rotation.y += Yaw;
 		Rotation.z += Roll;
 	}

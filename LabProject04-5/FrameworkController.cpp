@@ -15,7 +15,8 @@ std::unordered_map<std::string, char*> MeshList {
 	{ "pUfoMesh", "Models//UFO.txt" },
 	{ "pFlyerMesh", "Models//FlyerPlayerShip.txt" },
 	{ "pM60Mesh", "Models//m60.txt" },
-	{ "pFireMesh", "Models//fire.txt" }
+	{ "pFireMesh", "Models//fire.txt" },
+	{ "pAmmoMesh", "Models//ammo.txt"}
 };
 
 // teerain list to load

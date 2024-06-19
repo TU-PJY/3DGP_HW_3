@@ -1,6 +1,7 @@
 #pragma once
 #include "Framework.h"
 #include "Object.h"
+#include "Ammo.h"
 #include <cmath>
 
 class Gun : public OBJ {
@@ -35,10 +36,13 @@ public:
 
 		if (TriggerState) {
 			if (FireDelay == 0) {
-				FireDelay = 0.1;
+				FireDelay = 0.12;
 				Fire = true;
 				auto player = fw.FindObject("player", LayerRange::Single, Layer::L1);
 				if (player) player->GiveRecoil(3.0);
+
+				// 총알을 발사한다
+				fw.AddObject(new Ammo("ammo", Layer::L2, Up, Look, Position), Layer::L2);
 			}
 		}
 	}
@@ -54,9 +58,9 @@ public:
 			TargetRotation = player->Rotation;
 		}
 
-		Rotation.x = std::lerp(Rotation.x, TargetRotation.x, 20 * FT);
-		Rotation.y = std::lerp(Rotation.y, TargetRotation.y, 20 * FT);
-		Rotation.z = std::lerp(Rotation.z, TargetRotation.z, 20 * FT);
+		Rotation.x = std::lerp(Rotation.x, TargetRotation.x, 15 * FT);
+		Rotation.y = std::lerp(Rotation.y, TargetRotation.y, 15 * FT);
+		Rotation.z = std::lerp(Rotation.z, TargetRotation.z, 15 * FT);
 
 		SetPosition(Position.x, Position.y, Position.z );
 		Rotate(Rotation.x, Rotation.y, Rotation.z);
